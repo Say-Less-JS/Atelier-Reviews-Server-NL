@@ -18,10 +18,8 @@ module.exports = {
     let body =[req.body.product_id, req.body.rating, req.body.summary, req.body.body, req.body.recommend, req.body.reviewer_name, req.body.reviewer_email]
     models.reviews.addReview(body, req.body.photos,(err, results) => {
       if(err) {
-        console.log(req.body)
         throw err
       } else {
-        console.log(req)
         res.sendStatus(200)
       }
     })
