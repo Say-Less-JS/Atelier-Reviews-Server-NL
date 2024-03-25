@@ -52,6 +52,7 @@ module.exports = {
         res.sendStatus(500)
       } else {
         console.log('Succes update', req.params)
+        res.sendStatus(200)
       }
     })
   },
@@ -62,6 +63,7 @@ module.exports = {
         throw err;
         res.sendStatus(500)
       } else {
+        res.sendStatus(200)
         console.log('Review reported!')
       }
     })

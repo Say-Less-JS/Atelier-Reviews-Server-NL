@@ -59,4 +59,12 @@ FROM '/Users/nhule/HRProjects/SDC/Atelier-Reviews-Server-NL/database/data/review
 DELIMITER ','
 CSV HEADER;
 
+CREATE INDEX index_reviews_product_id ON reviews(product_id);
+
+CREATE INDEX index_characteristics_reviews_characteristics_id ON characteristicsReviews(characteristics_id);
+
+CREATE INDEX index_characteristics_reviews_review_id ON characteristicsReviews(review_id);
+
+CREATE INDEX index_reviews_photos_review_id ON reviewsPhotos(review_id);
+
 ALTER TABLE reviews ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date/1000);
