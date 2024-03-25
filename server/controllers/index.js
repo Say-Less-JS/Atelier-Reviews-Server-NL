@@ -1,1 +1,1 @@
-exports.messages = require('./reviews.js')
+exports.reviews = require('./reviews.js')

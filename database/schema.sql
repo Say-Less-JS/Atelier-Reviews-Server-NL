@@ -58,3 +58,5 @@ COPY reviewsPhotos
 FROM '/Users/nhule/HRProjects/SDC/Atelier-Reviews-Server-NL/database/data/reviews_photos.csv'
 DELIMITER ','
 CSV HEADER;
+
+ALTER TABLE reviews ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date/1000);
