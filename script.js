@@ -1,6 +1,5 @@
 import http from 'k6/http';
 import { sleep } from 'k6';
-require('dotenv').config();
 
 export const options = {
   stages: [
@@ -60,28 +59,28 @@ export const options = {
 // See https://grafana.com/docs/k6/latest/examples/get-started-with-k6/ to learn more
 // about authoring k6 scripts.
 //
-// export default function() {
-//   http.get(`http://${process.env.DB_HOST}:3000/reviews/1/meta`);
-//   sleep(1);
-// }
+export default function() {
+  http.get('http://18.223.247.69:3000/reviews/1/meta');
+  sleep(1);
+}
 
-// export default function() {
-//   http.get(`http://${process.env.DB_HOST}:3000/reviews/1`);
-//   sleep(1);
-// }
+export default function() {
+  http.get('http://18.223.247.69:3000/reviews/1');
+  sleep(1);
+}
 
-// export default function() {
-//   const payload = JSON.stringify({
-//     product_id: 1,
-//     rating: 5,
-//     summary: "testing post 23",
-//     body: "testing post 23 body",
-//     recommend: true,
-//     reviewer_name: "beagles",
-//     reviewer_email: "beagles@gmail.com",
-//     photos: ["https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.britannica.com%2F16%2F234216-050-C66F8665%2Fbeagle-hound-dog.jpg&tbnid=TxZas2ani8v5yM&vet=12ahUKEwjg16OeyI6FAxWeZjABHbw-AdcQMygAegQIARBz..i&imgrefurl=https%3A%2F%2Fwww.britannica.com%2Fanimal%2Fbeagle-dog&docid=gJ0ou-8nWSsfKM&w=1600&h=1057&q=beagle&ved=2ahUKEwjg16OeyI6FAxWeZjABHbw-AdcQMygAegQIARBz"]
-//   })
-//   const headers = {'Content-Type': 'application/json'}
-//   http.post(`http://${process.env.DB_HOST}:3000/reviews/1`, payload, {headers});
-//   sleep(1);
-// }
+export default function() {
+  const payload = JSON.stringify({
+    product_id: 1,
+    rating: 5,
+    summary: "testing post 23",
+    body: "testing post 23 body",
+    recommend: true,
+    reviewer_name: "beagles",
+    reviewer_email: "beagles@gmail.com",
+    photos: ["https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.britannica.com%2F16%2F234216-050-C66F8665%2Fbeagle-hound-dog.jpg&tbnid=TxZas2ani8v5yM&vet=12ahUKEwjg16OeyI6FAxWeZjABHbw-AdcQMygAegQIARBz..i&imgrefurl=https%3A%2F%2Fwww.britannica.com%2Fanimal%2Fbeagle-dog&docid=gJ0ou-8nWSsfKM&w=1600&h=1057&q=beagle&ved=2ahUKEwjg16OeyI6FAxWeZjABHbw-AdcQMygAegQIARBz"]
+  })
+  const headers = {'Content-Type': 'application/json'}
+  http.post('http://18.223.247.69:3000/reviews/1', payload, {headers});
+  sleep(1);
+}
