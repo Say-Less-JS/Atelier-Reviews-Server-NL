@@ -60,6 +60,7 @@ DELIMITER ','
 CSV HEADER;
 
 CREATE INDEX index_reviews_product_id ON reviews(product_id);
+CREATE INDEX index_reviews_reported ON reviews (reported);
 
 CREATE INDEX index_characteristics_reviews_characteristics_id ON characteristicsReviews(characteristics_id);
 
