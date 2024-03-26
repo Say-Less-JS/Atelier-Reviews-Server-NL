@@ -1,5 +1,6 @@
 import http from 'k6/http';
 import { sleep } from 'k6';
+require('dotenv').config();
 
 export const options = {
   stages: [
