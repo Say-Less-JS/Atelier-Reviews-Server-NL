@@ -3,37 +3,59 @@ const db = require('../../database/index.js')
 
 module.exports = {
   getAllReviews: function(params, queries, callback) {
-    let count = 2;
-    if (queries.count !== null) {
+    // Default count value is 5 if not provided, null, or undefined
+    let count = 5;
+    let page = 1; // Default page
+    let limit = count;
+    let offset = 0;
+
+    if (queries.count !== null && queries.count !== undefined) {
       count = queries.count;
+      limit = count;
     }
 
+    if (queries.page !== null && queries.page !== undefined) {
+      page = queries.page;
+    }
+
+    // Calculate the offset based on the page and limit
+    offset = (page - 1) * limit;
+
     const query = `
-      SELECT json_build_object(
-        'product', ${params.product_id},
-        'results', json_agg(review)
+    SELECT json_build_object(
+      'product', CAST(product_id AS TEXT),
+      'page', ${page},
+      'count', ${count},
+      'results', (
+          SELECT json_agg(
+              json_build_object(
+                  'review_id', pr.review_id,
+                  'rating', pr.rating,
+                  'summary', pr.summary,
+                  'recommend', pr.recommend,
+                  'response', pr.response,
+                  'body', pr.body,
+                  'date', pr.date,
+                  'reviewer_name', pr.reviewer_name,
+                  'helpfulness', pr.helpfulness,
+                  'photos', pr.photos
+              )
+          )
+          FROM (
+              SELECT *
+              FROM product_reviews
+              WHERE product_id = p.product_id
+              ORDER BY review_id ASC
+              LIMIT ${limit} OFFSET ${offset}
+          ) AS pr
       )
-      FROM (
-        SELECT
-          json_build_object(
-            'review_id', reviews.id,
-            'rating', rating,
-            'summary', summary,
-            'recommend', recommend,
-            'response', response,
-            'body', body,
-            'date', date,
-            'reviewer_name', reviewer_name,
-            'helpfulness', helpfulness,
-            'photos', COALESCE(json_agg(photo), '[]')
-          ) AS review
-        FROM reviews
-        LEFT JOIN reviewsphotos photo ON photo.review_id = reviews.id
-        WHERE reviews.product_id = ${Number(params.product_id)} AND reviews.reported = false
-        GROUP BY reviews.id
-        ORDER BY reviews.helpfulness DESC
-      ) AS reviews;
-    `;
+  ) AS json_data
+FROM (
+  SELECT DISTINCT product_id
+  FROM product_reviews
+  WHERE product_id = ${params.product_id}
+) AS p;
+`;
 
     db.query(query, (err, results) => {
       if (err) {
@@ -90,39 +112,8 @@ module.exports = {
     });
   },
   getReviewsMeta: function(params, callback) {
-    const query = `
-      SELECT json_build_object(
-        'product_id', ${params.product_id},
-        'ratings', (
-          SELECT COALESCE(json_object_agg(entry, count), '[]')
-          FROM (
-            SELECT entry, COUNT(*) AS count
-            FROM (
-              SELECT DISTINCT rating AS entry
-              FROM reviews
-              WHERE product_id = ${params.product_id}
-              AND reported = false
-            ) AS subquery
-            GROUP BY entry
-          ) AS counts
-        ),
-        'recommended', (
-          SELECT json_build_object(
-            0, (SELECT COUNT(*) FROM reviews WHERE recommend = true AND reported = false AND product_id = ${params.product_id}),
-            1, (SELECT COUNT(*) FROM reviews WHERE recommend = false AND reported = false AND product_id = ${params.product_id})
-          )
-        ),
-        'characteristics', (
-          SELECT json_object_agg(characteristics.name, json_build_object(
-            'id', characteristicsreviews.characteristics_id,
-            'value', characteristicsreviews.value
-          ))
-          FROM characteristics
-          FULL JOIN characteristicsreviews ON characteristics.id = characteristicsreviews.characteristics_id
-          WHERE characteristics.product_id = ${params.product_id}
-        )
-      );
-    `;
+
+    const query = `SELECT * FROM meta_data WHERE product_id = ${params.product_id}`
 
     db.query(query, (err, results) => {
       if (err) {
@@ -155,6 +146,8 @@ module.exports = {
         callback(null, results)
       }
     })
+  }, updateMetaData: function(callback) {
+    const query = ``
   }
 }
 

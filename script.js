@@ -60,12 +60,12 @@ export const options = {
 // about authoring k6 scripts.
 //
 export default function() {
-  http.get('http://18.223.247.69:3000/reviews/1/meta');
+  http.get('http://localhost:3000/reviews/1');
   sleep(1);
 }
 
 // export default function() {
-//   http.get('http://18.223.247.69:3000/reviews/1');
+//   http.get('http://18.117.169.28:5432/reviews/1');
 //   sleep(1);
 // }
 
@@ -81,6 +81,6 @@ export default function() {
 //     photos: ["https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.britannica.com%2F16%2F234216-050-C66F8665%2Fbeagle-hound-dog.jpg&tbnid=TxZas2ani8v5yM&vet=12ahUKEwjg16OeyI6FAxWeZjABHbw-AdcQMygAegQIARBz..i&imgrefurl=https%3A%2F%2Fwww.britannica.com%2Fanimal%2Fbeagle-dog&docid=gJ0ou-8nWSsfKM&w=1600&h=1057&q=beagle&ved=2ahUKEwjg16OeyI6FAxWeZjABHbw-AdcQMygAegQIARBz"]
 //   })
 //   const headers = {'Content-Type': 'application/json'}
-//   http.post('http://18.223.247.69:3000/reviews/1', payload, {headers});
+//   http.post('http://18.117.169.28:5432/reviews/1', payload, {headers});
 //   sleep(1);
 // }
