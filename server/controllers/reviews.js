@@ -10,7 +10,6 @@ module.exports = {
         res.sendStatus(500)
       } else {
         res.send(results.rows)
-        console.log("GETREVIEWS")
       }
     })
   },
